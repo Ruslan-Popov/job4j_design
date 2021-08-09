@@ -20,7 +20,7 @@ public class MatrixIt implements Iterator {
             }
             row++;
         }
-        return true;
+        return row <= data.length - 1;
     }
 
     @Override
@@ -31,10 +31,9 @@ public class MatrixIt implements Iterator {
         if (column > data[row].length - 1) {
             column = 0;
             row++;
-            while (data[row].length == 0) {
-                row++;
-            }
-            return data[row][column++];
+        }
+        while (data[row].length == 0) {
+            row++;
         }
         return data[row][column++];
     }
