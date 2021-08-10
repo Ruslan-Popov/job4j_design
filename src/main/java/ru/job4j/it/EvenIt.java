@@ -13,11 +13,10 @@ public class EvenIt implements Iterator {
 
     @Override
     public boolean hasNext() {
-        for (int i = 0; i < numbers.length; i++) {
-            if (i >= point) {
-                if (numbers[i] % 2 == 0) {
-                    return true;
-                }
+        for (int i = point; i < numbers.length; i++) {
+            if (numbers[i] % 2 == 0) {
+                point = i;
+                return true;
             }
         }
         return false;
@@ -27,9 +26,6 @@ public class EvenIt implements Iterator {
     public Integer next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
-        }
-        if (numbers[point] % 2 != 0) {
-            point++;
         }
         return numbers[point++];
     }
