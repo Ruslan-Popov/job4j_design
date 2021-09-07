@@ -1,8 +1,8 @@
 package ru.job4j.it;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Collections;
 
 public class FlatMap<T> implements Iterator<T> {
@@ -15,7 +15,13 @@ public class FlatMap<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        return false;
+        while (!cursor.hasNext()) {
+            if (!data.hasNext()) {
+                return false;
+            }
+            cursor = data.next();
+        }
+        return true;
     }
 
     @Override
