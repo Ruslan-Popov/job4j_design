@@ -84,6 +84,6 @@ public class FlatMapTest {
                 List.of().iterator()
         ).iterator();
         FlatMap flat = new FlatMap(it);
-        assertFalse(flat.hasNext());
+        assertFalse(flat.hasNext());//
     }
 }
