@@ -21,7 +21,7 @@ public class FlatMap<T> implements Iterator<T> {
             }
             cursor = data.next();
         }
-        return true;//
+        return true;
     }
 
     @Override
