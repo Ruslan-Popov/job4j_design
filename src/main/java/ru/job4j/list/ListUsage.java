@@ -17,7 +17,7 @@ public class ListUsage {
         list.add("six");
         rsl.addAll(2, list);
         rsl = List.of("one", "two", "three");
-        //rsl.add(0, "zero");  = UnsupportedOperationException - immutable collections - List.of - только для тестов!!
+        rsl.add(0, "zero");  = UnsupportedOperationException - immutable collections - List.of - только для тестов!!
         for (String s : rsl) {
             System.out.println("Текущий элемент: " + s);
         }*/
