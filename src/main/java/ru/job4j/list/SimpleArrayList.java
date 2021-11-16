@@ -14,10 +14,14 @@ public class SimpleArrayList<T> implements List<T> {
         this.container = (T[]) new Object[capacity];
     }
 
+    private void doubleArrayLength() {
+        container = Arrays.copyOf(container, container.length * 2);
+    }
+
     @Override
     public void add(T value) {
         if (size >= container.length) {
-            container = Arrays.copyOf(container, container.length * 2);
+            doubleArrayLength();
         }
         container[size] = value;
         size++;
@@ -26,15 +30,16 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public T set(int index, T newValue) {
-        container[Objects.checkIndex(index, container.length - 1)] = newValue;
+        Objects.checkIndex(index, container.length - 1);
+        container[index] = newValue;
         return newValue;
     }
 
     @Override
-    public T remove(int index) /*throws IndexOutOfBoundsException*/ {
+    public T remove(int index) {
+        Objects.checkIndex(index, size + 1);
         T removedElement = container[index];
-        int existingIndex = Objects.checkIndex(index, size + 1);
-        System.arraycopy(container, existingIndex + 1, container, existingIndex, container.length - existingIndex - 1);
+        System.arraycopy(container, index + 1, container, index, container.length - index - 1);
         container[container.length - 1] = null;
         size--;
         modCount++;
@@ -59,20 +64,19 @@ public class SimpleArrayList<T> implements List<T> {
             int expectedModCount = modCount;
 
             @Override
-            public boolean hasNext() {
+            public boolean hasNext() throws ConcurrentModificationException {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return i < size;
             }
 
             @Override
-            public T next() throws NoSuchElementException, ConcurrentModificationException {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
-                if (hasNext()) {
-                    return container[i++];
-                } else {
+            public T next() throws NoSuchElementException {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
+                return container[i++];
             }
         };
     }
