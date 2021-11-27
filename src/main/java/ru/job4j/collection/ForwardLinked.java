@@ -19,6 +19,11 @@ public class ForwardLinked<T> implements Iterable<T> {
         tail.next = node;
     }
 
+    public void addFirst(T value) {
+        Node<T> newHead = new Node(value, head);
+        head = newHead;
+    }
+
     public T deleteFirst() throws NoSuchElementException {
         if (head == null) {
             throw new NoSuchElementException("The collection is empty");

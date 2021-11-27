@@ -2,6 +2,7 @@ package ru.job4j.collection;
 
 import org.junit.Test;
 
+import java.nio.charset.IllegalCharsetNameException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -32,5 +33,14 @@ public class ForwardLinkedTest {
         Iterator<Integer> it = linked.iterator();
         assertThat(it.next(), is(2));
         assertThat(it.hasNext(), is(false));
+    }
+
+    @Test
+    public void whenAddThenAddFirst() {
+        ForwardLinked<Integer> linked = new ForwardLinked<>();
+        linked.add(1);
+        linked.addFirst(2);
+        assertThat(linked.deleteFirst(), is(2));
+        assertThat(linked.deleteFirst(), is(1));
     }
 }
