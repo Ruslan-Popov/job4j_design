@@ -1,5 +1,7 @@
 package ru.job4j.collection;
 
+import java.util.NoSuchElementException;
+
 /**
  * Класс описывает простейшую очередь по принципу FIFO, основанную на двух стеках LIFO
  * @param <T> тип добавляемых ссылочных переменных
@@ -24,7 +26,10 @@ public class SimpleQueue<T> {
      * Метод возвращает первое значение и удаляет его
      * @return возвращает удаленное первое значение
      */
-    public T poll() {
+    public T poll() throws NoSuchElementException {
+        if (size == 0) {
+            throw new NoSuchElementException("The queue is empty");
+        }
         size--;
         return in.pop();
     }
