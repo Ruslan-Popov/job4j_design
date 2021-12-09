@@ -11,14 +11,8 @@ public class UsageSet {
         strings.add("one");
         strings.add("two");
         strings.add("three");
-        Iterator<String> iterator = strings.iterator();
-        for (String s : strings) {
-            System.out.println("Текущий элемент: " + s);
-        }
-        strings.removeIf(s -> s.startsWith("t"));
-        System.out.println("Вывод в консоль после удаления... ");
-        for (String s : strings) {
-            System.out.println("Текущий элемент: " + s);
-        }
+        strings.stream()
+                .filter(s -> s.length() < 5)
+                .forEach(s -> System.out.println("Текущий элемент: " + s));
     }
 }
