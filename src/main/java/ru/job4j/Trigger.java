@@ -15,10 +15,10 @@ public class Trigger {
         int a = -51;
         System.out.println(binary(a));
         int b = a >>> 2;
-//        int c = a & b;
+        /*int c = a & b;*/
         System.out.println(binary(b));
         System.out.println("a = " + a);
         System.out.println("b = " + b);
-//        System.out.println("с = " + c);
+        /*System.out.println("с = " + c);*/
     }
 }
