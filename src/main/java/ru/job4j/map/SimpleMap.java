@@ -30,6 +30,11 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
+
+        if (count >= capacity * LOAD_FACTOR) {
+            expand();
+        }
+
         boolean rst = true;
         int index = indexFor(hash(key.hashCode()));
         if (table[index] == null) {
@@ -37,16 +42,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
             modCount++;
             count++;
         } else {
-            if (table[index].key.equals(key)) {
-                table[index] = new MapEntry<>(key, value);
-                count++;
-                modCount++;
-            } else {
-                rst = false;
-            }
-        }
-        if (count >= capacity * LOAD_FACTOR) {
-            expand();
+            rst = false;
         }
         return rst;
     }
@@ -113,6 +109,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
             @Override
             public K next() throws NoSuchElementException {
+                if (table[i] == null) {
+                    i++;
+                }
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }

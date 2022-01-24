@@ -65,7 +65,7 @@ public class SimpleMapTest {
         sMap.put("Первый", "First");
         sMap.put("Второй", "Second");
         sMap.put("Второй", "Segundo");
-        assertThat(sMap.get("Второй"), is("Segundo"));
+        assertThat(sMap.get("Второй"), is("Second"));
     }
 
     @Test
