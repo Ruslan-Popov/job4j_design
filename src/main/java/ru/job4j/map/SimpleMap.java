@@ -96,7 +96,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public Iterator<K> iterator() throws ConcurrentModificationException, NoSuchElementException {
         Iterator<K> iterator = new Iterator<>() {
-            int i = 0;
+            int point = 0;
             int expectedModCount = modCount;
 
             @Override
@@ -104,18 +104,21 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException("The Map cannot be modified while iterating");
                 }
-                return i < count;
+                for (int i = point; i < table.length; i++) {
+                    if (table[point] != null) {
+                        point = i;
+                        return true;
+                    }
+                }
+                return false;
             }
 
             @Override
             public K next() throws NoSuchElementException {
-                if (table[i] == null) {
-                    i++;
-                }
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return table[i++].key;
+                return table[point++].key;
             }
         };
         return iterator;
