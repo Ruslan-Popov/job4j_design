@@ -1,9 +1,6 @@
 package ru.job4j.map;
 
-import java.util.Arrays;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -91,6 +88,31 @@ public class SimpleMap<K, V> implements Map<K, V> {
             modCount++;
         }
         return rst;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SimpleMap<?, ?> simpleMap = (SimpleMap<?, ?>) o;
+        return capacity == simpleMap.capacity
+                && count == simpleMap.count
+                && modCount == simpleMap.modCount
+                && Arrays.equals(table, simpleMap.table);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 24;
+        result = 31 * result + capacity;
+        result = 31 * result + count;
+        result = 31 * result + modCount;
+        result = 31 * result + Arrays.hashCode(table);
+        return result;
     }
 
     @Override
