@@ -27,11 +27,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-
         if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
-
         boolean rst = true;
         int index = indexFor(hash(key.hashCode()));
         if (table[index] == null) {
@@ -80,7 +78,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public boolean remove(K key) {
         boolean rst = true;
         int index = indexFor(hash(key.hashCode()));
-        if (table[index] == null) {
+        if (table[index] == null || !table[index].key.equals(key)) {
             rst = false;
         } else {
             table[index] = null;
@@ -126,13 +124,14 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException("The Map cannot be modified while iterating");
                 }
+                boolean rst = false;
                 for (int i = point; i < table.length; i++) {
                     if (table[point] != null) {
                         point = i;
-                        return true;
+                        rst = true;
                     }
                 }
-                return false;
+                return rst;
             }
 
             @Override
