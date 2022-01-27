@@ -126,7 +126,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 }
                 boolean rst = false;
                 for (int i = point; i < table.length; i++) {
-                    if (table[point] != null) {
+                    if (table[i] != null) {
                         point = i;
                         rst = true;
                     }
