@@ -129,6 +129,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
                     if (table[i] != null) {
                         point = i;
                         rst = true;
+                        break;
                     }
                 }
                 return rst;
