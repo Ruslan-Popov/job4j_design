@@ -55,10 +55,10 @@ public class SimpleTree<E> implements Tree<E> {
         return rst;
     }
 
-//    private Optional<Node<E>> findByPredicate(Predicate<Node<E>> condition) {
-//
-//    }
+    /*private Optional<Node<E>> findByPredicate(Predicate<Node<E>> condition) {
 
+    }
+*/
     @Override
     public boolean equals(Object o) {
         if (this == o) {
