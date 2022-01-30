@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.function.Predicate;
 
 public class SimpleTree<E> implements Tree<E> {
     private final Node<E> root;
@@ -15,8 +16,9 @@ public class SimpleTree<E> implements Tree<E> {
     @Override
     public boolean add(E parent, E child) {
         boolean rsl = false;
-        if (this.findBy(parent).isPresent() && this.findBy(child).isEmpty()) {
-            this.findBy(parent).get().children.add(new Node<>(child));
+        Optional<Node<E>> parentOptionalNode = findBy(parent);
+        if (parentOptionalNode.isPresent() && findBy(child).isEmpty()) {
+            parentOptionalNode.get().children.add(new Node<>(child));
             rsl = true;
         }
         return rsl;
@@ -37,6 +39,25 @@ public class SimpleTree<E> implements Tree<E> {
         }
         return rsl;
     }
+
+    public boolean isBinary() {
+        boolean rst = true;
+        Queue<Node<E>> data = new LinkedList<>();
+        data.offer(this.root);
+        while (!data.isEmpty()) {
+            Node<E> el = data.poll();
+            if (el.children.size() > 2) {
+                rst = false;
+                break;
+            }
+            data.addAll(el.children);
+        }
+        return rst;
+    }
+
+//    private Optional<Node<E>> findByPredicate(Predicate<Node<E>> condition) {
+//
+//    }
 
     @Override
     public boolean equals(Object o) {
