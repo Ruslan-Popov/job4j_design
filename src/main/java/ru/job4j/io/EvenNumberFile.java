@@ -13,17 +13,12 @@ public class EvenNumberFile {
                 text.append((char) read);
             }
             String[] lines = text.toString().split(System.lineSeparator());
-            int[] values = new int[lines.length];
-            for (int i = 0; i < lines.length; i++) {
-                values[i] = Integer.parseInt(lines[i]);
-            }
-            List<Integer> oddValues = new ArrayList<>();
-            for (int i : values) {
-                if (i % 2 == 0) {
-                    oddValues.add(i);
+            for (String line : lines) {
+                int number = Integer.parseInt(line);
+                if (number % 2 == 0) {
+                    System.out.println(number);
                 }
             }
-            System.out.println(oddValues);
         } catch (Exception e) {
             e.printStackTrace();
         }
