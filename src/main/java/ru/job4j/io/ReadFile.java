@@ -10,7 +10,7 @@ public class ReadFile {
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 System.out.println(line);
             }
-            //            in.lines().forEach(System.out::println);
+            /*            in.lines().forEach(System.out::println);*/
         } catch (Exception e) {
             e.printStackTrace();
         }
