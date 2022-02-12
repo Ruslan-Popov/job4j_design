@@ -11,15 +11,12 @@ public class LogFilter {
         List<String> list = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             list = reader.lines()
-                    .map(s -> s.split(" "))
-                    .filter(s -> s[s.length - 2].equals("404"))
-                    .map(s -> {
+                    .map(string -> string.split(" "))
+                    .filter(stringArray -> "404".equals(stringArray[stringArray.length - 2]))
+                    .map(stringArray -> {
                         StringBuilder strb = new StringBuilder();
-                        for (int i = 0; i < s.length; i++) {
-                            strb.append(s[i] + " ");
-                            if (i == s.length - 1) {
-                                strb.append(System.lineSeparator());
-                            }
+                        for (String word : stringArray) {
+                            strb.append(word + " ");
                         }
                         return strb.toString();
                     })
@@ -33,6 +30,8 @@ public class LogFilter {
     public static void main(String[] args) {
         LogFilter logFilter = new LogFilter();
         List<String> log = logFilter.filter("log.txt");
-        System.out.println(log);
+        for (String s : log) {
+            System.out.println(s);
+        }
     }
 }
