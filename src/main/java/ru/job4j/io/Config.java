@@ -20,10 +20,15 @@ public class Config {
     public void load() {
         try (BufferedReader reader = new BufferedReader(new FileReader(this.path))) {
             Map<String, String> val = reader.lines()
-                    .filter(s -> s.length() > 0)
+                    .filter(s -> s.trim().length() > 0)
                     .filter(s -> ('#' != s.charAt(0)))
                     .map(s -> s.split("="))
-                    .collect(Collectors.toMap(s -> s[0], s -> s[1]));
+                    .collect(Collectors.toMap(s -> s[0], s -> {
+                        if (s.length < 2) {
+                            return "";
+                        }
+                        return s[1];
+                    }));
             values.putAll(val);
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,7 +47,7 @@ public class Config {
     }
 
     public String value(String key) throws IllegalArgumentException {
-        if (key == null) {
+        if (key == null || values.get(key) == "") {
             throw new IllegalArgumentException();
         }
         return values.get(key);

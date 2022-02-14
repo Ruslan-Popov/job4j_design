@@ -33,4 +33,12 @@ public class ConfigTest {
         config.load();
         config.value(null);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenEmptyValue() {
+        String path = "./data/pair_with_illegal_format.properties";
+        Config config = new Config(path);
+        config.load();
+        config.value("name");
+    }
 }
