@@ -28,7 +28,7 @@ public class ConfigTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void whenEmptyArgument() {
-        String path = "./data/pair_with_illegal_format.properties";
+        String path = "./data/pair_without_key.properties";
         Config config = new Config(path);
         config.load();
         config.value(null);
@@ -36,7 +36,7 @@ public class ConfigTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void whenEmptyValue() {
-        String path = "./data/pair_with_illegal_format.properties";
+        String path = "./data/pair_without_value.properties";
         Config config = new Config(path);
         config.load();
         config.value("name");
