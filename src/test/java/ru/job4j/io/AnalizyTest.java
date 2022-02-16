@@ -19,12 +19,12 @@ public class AnalizyTest {
         File source = folder.newFile("source.txt");
         File target = folder.newFile("target.txt");
         try (PrintWriter out = new PrintWriter(source)) {
-            out.println("200 10:56:01\n" +
-                    "200 10:57:01\n" +
-                    "400 10:58:01\n" +
-                    "200 10:59:01\n" +
-                    "500 11:01:02\n" +
-                    "200 11:02:02");
+            out.println("200 10:56:01\n"
+                    + "200 10:57:01\n"
+                    + "400 10:58:01\n"
+                    + "200 10:59:01\n"
+                    + "500 11:01:02\n"
+                    + "200 11:02:02");
         }
         Analizy down = new Analizy();
         down.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
@@ -32,7 +32,7 @@ public class AnalizyTest {
         try (BufferedReader in = new BufferedReader(new FileReader(target))) {
             in.lines().forEach(rsl::append);
         }
-        assertThat(rsl.toString(), is("10:58:01;10:59:01;" +
-                "11:01:02;11:02:02;"));
+        assertThat(rsl.toString(), is("10:58:01;10:59:01;"
+                + "11:01:02;11:02:02;"));
     }
 }
