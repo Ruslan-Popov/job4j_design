@@ -9,15 +9,14 @@ public class Analizy {
              PrintWriter writer = new PrintWriter((new FileOutputStream(target)))) {
             boolean serverDown = false;
             boolean written = false;
-            String input = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-            String[] in = input.split(System.lineSeparator());
-            for (String line : in) {
-                if (line.contains("400") || line.contains("500")) {
+            String in;
+            while ((in = reader.readLine()) != null) {
+                if (in.contains("400") || in.contains("500")) {
                     if (serverDown) {
                         continue;
                     }
                     serverDown = true;
-                    String startDown = line.substring(4);
+                    String startDown = in.substring(4);
                     if (written) {
                         writer.println();
                     }
@@ -26,7 +25,7 @@ public class Analizy {
                 } else {
                     if (serverDown) {
                         serverDown = false;
-                        String endDown = line.substring(4);
+                        String endDown = in.substring(4);
                         writer.print(endDown + ";");
                     }
                 }
@@ -35,7 +34,6 @@ public class Analizy {
                 Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public static void main(String[] args) {
