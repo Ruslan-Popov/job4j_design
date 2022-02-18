@@ -11,11 +11,10 @@ public class Dir {
         if (!file.isDirectory()) {
             throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsolutePath()));
         }
-        System.out.println(String.format("name : %s", file.getName()));
-        System.out.println(String.format("size : %s", file.length()));
-        /*System.out.println(String.format("size : %s", file.getTotalSpace()));
+        System.out.println(String.format(file.getName() + " folder's size : %s", file.getTotalSpace()));
+        System.out.println("Files / folders : ");
         for (File subfile : file.listFiles()) {
-            System.out.println(subfile.getAbsolutePath());
-        }*/
+            System.out.println(subfile.getName() + " , size : " + subfile.length());
+        }
     }
 }
