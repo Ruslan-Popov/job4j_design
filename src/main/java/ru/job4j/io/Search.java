@@ -10,7 +10,6 @@ import java.util.function.Predicate;
 public class Search {
     public static void main(String[] args) throws IOException {
         Path start = Paths.get(".");
-        /*Files.walkFileTree(start, new PrintFiles());*/
         search(start, p -> p.toFile().getName().endsWith(".txt")).forEach(System.out::println);
     }
 
