@@ -10,28 +10,38 @@ import java.util.*;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
-    /*Map<Long, String> filesInfo = new HashMap<>();*/
     List<FileProperty> fileInfo = new ArrayList<>();
+    Set<String> duplicates = new HashSet<>();
+    int count = -1;
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+        count++;
+        return super.preVisitDirectory(dir, attrs);
+    }
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         for (FileProperty fileProperty : fileInfo) {
-            if (fileProperty.getSize() == Files.size(file) && fileProperty.getName().equals(file.getFileName().toString())) {
-                System.out.printf("Duplicate found: file %s with size %d bytes%s"
-                                + "%3s and file %s with same size%s",
-                        fileProperty.getPath(), fileProperty.getSize(), System.lineSeparator(), "", file.toAbsolutePath().toString(), System.lineSeparator()
-                        );
+            if (fileProperty.getSize() == Files.size(file)
+                    && fileProperty.getName().equals(file.getFileName().toString())) {
+                duplicates.add(fileProperty.getPath());
+                duplicates.add(file.toAbsolutePath().toString());
+                break;
             }
         }
         fileInfo.add(new FileProperty(Files.size(file), file.getFileName().toString(), file.toAbsolutePath().toString()));
-/*        for (Map.Entry entry : filesInfo.entrySet()) {
-            if (Objects.equals(entry.getKey(), Files.size(file))
-                    && entry.getValue().equals(file.getFileName().toString())) {
-                System.out.printf("Duplicate found: file %s with size %d bytes%s",
-                        entry.getValue(), entry.getKey(), System.lineSeparator());
+        return super.visitFile(file, attrs);
+    }
+
+    @Override
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+        count--;
+        if (count == -1) {
+            for (String s : duplicates) {
+                System.out.println(s);
             }
         }
-        filesInfo.put(Files.size(file), file.getFileName().toString());*/
-        return super.visitFile(file, attrs);
+        return super.postVisitDirectory(dir, exc);
     }
 }
