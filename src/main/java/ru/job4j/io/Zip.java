@@ -11,19 +11,16 @@ import java.util.zip.ZipOutputStream;
 
 public class Zip {
 
-    Path start;
+    private Path start;
 
     public void packFiles(List<Path> sources, Path target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target.toFile())))) {
             for (Path p : sources) {
-                try (FileInputStream fis = new FileInputStream(p.toFile())) {
-                    zip.putNextEntry(new ZipEntry(start.getParent().relativize(p).toString()));
-                    zip.write(fis.readAllBytes());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                FileInputStream fis = new FileInputStream(p.toFile());
+                zip.putNextEntry(new ZipEntry(start.getParent().relativize(p).toString()));
+                zip.write(fis.readAllBytes());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -40,17 +37,20 @@ public class Zip {
     }
 
     public static void main(String[] args) throws IOException {
-        ArgsName argsName = ArgsName.of(new String[] {args[0], args[1], args[2]});
         if (args.length != 3) {
             throw new IllegalArgumentException("Root folder, extension to exclude and target zip directory "
                     + "must be specified. Usage java -jar target/zip.jar ROOT_FOLDER EXTENSION_TO_EXCLUDE "
                     + "TARGET_ZIP_DIRECTORY");
         }
+        ArgsName argsName = ArgsName.of(args);
         String directory = argsName.get("d");
         String exclude = argsName.get("e");
         String output = argsName.get("o");
         if (!Files.isDirectory(Paths.get(directory))) {
             throw new IllegalArgumentException("Root folder must be directory");
+        }
+        if (!exclude.startsWith(".")) {
+            throw new IllegalArgumentException("Extension to exclude must start with \".\"");
         }
         Zip zip = new Zip();
         zip.start = Paths.get(directory);
