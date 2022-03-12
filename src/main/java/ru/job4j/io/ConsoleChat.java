@@ -27,14 +27,14 @@ public class ConsoleChat {
             System.out.printf("Напишите что-нибудь, чтобы начать диалог. Напишите \"%s\", чтобы бот замолчал, "
                             + "\"%s\", чтобы продолжить, или \"%s\", чтобы завершить программу%s",
                     STOP, CONTINUE, OUT, System.lineSeparator());
-            for (String input = in.readLine(); !input.equals(OUT); input = in.readLine()) {
+            for (String input = in.readLine(); !OUT.equals(input); input = in.readLine()) {
                 if (input.equals("")) {
                     continue;
                 }
-                if (input.equals(STOP)) {
+                if (STOP.equals(input)) {
                     pause = true;
                 }
-                if (input.equals(CONTINUE)) {
+                if (CONTINUE.equals(input)) {
                     pause = false;
                 }
                 if (pause) {
