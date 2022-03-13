@@ -27,6 +27,7 @@ public class ConsoleChat {
             System.out.printf("Напишите что-нибудь, чтобы начать диалог. Напишите \"%s\", чтобы бот замолчал, "
                             + "\"%s\", чтобы продолжить, или \"%s\", чтобы завершить программу%s",
                     STOP, CONTINUE, OUT, System.lineSeparator());
+            PrintStream ps = new PrintStream(System.out);
             for (String input = in.readLine(); !OUT.equals(input); input = in.readLine()) {
                 if (input.equals("")) {
                     continue;
@@ -41,7 +42,6 @@ public class ConsoleChat {
                     continue;
                 }
                 log.add(input);
-                PrintStream ps = new PrintStream(System.out);
                 String botLine = phrases.get((int) (Math.random() * phrases.size()));
                 ps.println(botLine);
                 log.add(botLine);
@@ -65,7 +65,9 @@ public class ConsoleChat {
 
     private void saveLog(List<String> log) {
         try (BufferedWriter out = new BufferedWriter(new FileWriter(path))) {
-            out.write(log + System.lineSeparator());
+            for (String s : log) {
+                out.write(s + System.lineSeparator());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
