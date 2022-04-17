@@ -6,10 +6,12 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class CSVReader {
-    public static void handle(ArgsName argsName) throws Exception {
 
-        try (BufferedReader input = new BufferedReader(new FileReader(new File(argsName.get("path"))));
-             PrintWriter output = new PrintWriter(new BufferedOutputStream(new FileOutputStream(argsName.get("out"))))) {
+    static String out = "";
+
+    public static void handle(ArgsName argsName) {
+
+        try (BufferedReader input = new BufferedReader(new FileReader(argsName.get("path")))) {
             Scanner scanner = new Scanner(input);
             String firstLine = scanner.nextLine();
             String[] firstLineWords = firstLine.split(argsName.get("delimiter"));
@@ -25,10 +27,10 @@ public class CSVReader {
             for (int i = 0; i < columnsNumbers.size(); i++) {
                 int num = columnsNumbers.get(i);
                 if (i == columnsNumbers.size() - 1) {
-                    output.printf("%s%s", firstLineWords[num], System.lineSeparator());
+                    printOut(firstLineWords[num] + System.lineSeparator());
                     break;
                 }
-                output.printf("%s%s", firstLineWords[num], ";");
+                printOut(firstLineWords[num] + ";");
             }
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -36,12 +38,37 @@ public class CSVReader {
                 for (int index = 0; index < columnsNumbers.size(); index++) {
                     int colNumber = columnsNumbers.get(index);
                     if (index == columnsNumbers.size() - 1) {
-                        output.printf("%s%s", words[colNumber], System.lineSeparator());
+                        printOut(words[colNumber] + System.lineSeparator());
                         break;
                     }
-                    output.printf("%s%s", words[colNumber], ";");
+                    printOut(words[colNumber] + ";");
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void printOut(String in) {
+        if (out.equals("stdout")) {
+            System.out.print(in);
+        } else {
+            try (PrintWriter output = new PrintWriter(new BufferedOutputStream(new FileOutputStream(out)))) {
+                output.println(in);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void validate(ArgsName argsName) {
+        String path = argsName.get("path");
+        out = argsName.get("out");
+        if (!Files.isRegularFile(Paths.get(path))) {
+            throw new IllegalArgumentException("input must be file");
+        }
+        if (!out.equals("stdout") && !Files.isRegularFile(Paths.get(out))) {
+            throw new IllegalArgumentException("Output folder (out) must be either directory or stdout");
         }
     }
 
@@ -52,18 +79,7 @@ public class CSVReader {
                     + "-delimiter=\";\" -out=stdout -filter=name,age");
         }
         ArgsName argsName = ArgsName.of(args);
-        String path = argsName.get("path");
-        String out = argsName.get("out");
-        if (!Files.isRegularFile(Paths.get(path))) {
-            throw new IllegalArgumentException("input must be file");
-        }
-        if (!out.equals("stdout") && !Files.isRegularFile(Paths.get(out))) {
-            throw new IllegalArgumentException("Output folder (out) must be either directory or stdout");
-        }
-        try {
-            CSVReader.handle(argsName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        validate(argsName);
+        CSVReader.handle(argsName);
     }
 }
