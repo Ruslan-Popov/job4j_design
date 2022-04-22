@@ -10,8 +10,9 @@ public class CSVReader {
     static String out = "";
 
     public static void handle(ArgsName argsName) {
-
-        try (BufferedReader input = new BufferedReader(new FileReader(argsName.get("path")))) {
+        out = argsName.get("out");
+        try (BufferedReader input = new BufferedReader(new FileReader(argsName.get("path")));
+             PrintWriter output = new PrintWriter(new BufferedOutputStream(new FileOutputStream(out)))) {
             Scanner scanner = new Scanner(input);
             String firstLine = scanner.nextLine();
             String[] firstLineWords = firstLine.split(argsName.get("delimiter"));
@@ -27,10 +28,10 @@ public class CSVReader {
             for (int i = 0; i < columnsNumbers.size(); i++) {
                 int num = columnsNumbers.get(i);
                 if (i == columnsNumbers.size() - 1) {
-                    printOut(firstLineWords[num] + System.lineSeparator());
+                    printOut(firstLineWords[num] + System.lineSeparator(), output);
                     break;
                 }
-                printOut(firstLineWords[num] + ";");
+                printOut(firstLineWords[num] + ";", output);
             }
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -38,10 +39,10 @@ public class CSVReader {
                 for (int index = 0; index < columnsNumbers.size(); index++) {
                     int colNumber = columnsNumbers.get(index);
                     if (index == columnsNumbers.size() - 1) {
-                        printOut(words[colNumber] + System.lineSeparator());
+                        printOut(words[colNumber] + System.lineSeparator(), output);
                         break;
                     }
-                    printOut(words[colNumber] + ";");
+                    printOut(words[colNumber] + ";", output);
                 }
             }
         } catch (IOException e) {
@@ -49,15 +50,11 @@ public class CSVReader {
         }
     }
 
-    private static void printOut(String in) {
+    private static void printOut(String in, PrintWriter output) {
         if (out.equals("stdout")) {
             System.out.print(in);
         } else {
-            try (PrintWriter output = new PrintWriter(new BufferedOutputStream(new FileOutputStream(out)))) {
-                output.println(in);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            output.print(in);
         }
     }
 
