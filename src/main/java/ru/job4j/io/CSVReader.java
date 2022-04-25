@@ -11,8 +11,8 @@ public class CSVReader {
 
     public static void handle(ArgsName argsName) {
         out = argsName.get("out");
-        try (BufferedReader input = new BufferedReader(new FileReader(argsName.get("path")));
-             PrintWriter output = new PrintWriter(new BufferedOutputStream(new FileOutputStream(out)))) {
+        try (BufferedReader input = new BufferedReader(new FileReader(argsName.get("path")))) {
+            StringBuilder stringBuilder = new StringBuilder();
             Scanner scanner = new Scanner(input);
             String firstLine = scanner.nextLine();
             String[] firstLineWords = firstLine.split(argsName.get("delimiter"));
@@ -28,10 +28,10 @@ public class CSVReader {
             for (int i = 0; i < columnsNumbers.size(); i++) {
                 int num = columnsNumbers.get(i);
                 if (i == columnsNumbers.size() - 1) {
-                    printOut(firstLineWords[num] + System.lineSeparator(), output);
+                    stringBuilder.append(firstLineWords[num]).append(System.lineSeparator());
                     break;
                 }
-                printOut(firstLineWords[num] + ";", output);
+                stringBuilder.append(firstLineWords[num]).append(";");
             }
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -39,22 +39,27 @@ public class CSVReader {
                 for (int index = 0; index < columnsNumbers.size(); index++) {
                     int colNumber = columnsNumbers.get(index);
                     if (index == columnsNumbers.size() - 1) {
-                        printOut(words[colNumber] + System.lineSeparator(), output);
+                        stringBuilder.append(words[colNumber]).append(System.lineSeparator());
                         break;
                     }
-                    printOut(words[colNumber] + ";", output);
+                    stringBuilder.append(words[colNumber]).append(";");
                 }
             }
+            printOut(stringBuilder.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void printOut(String in, PrintWriter output) {
-        if (out.equals("stdout")) {
+    private static void printOut(String in) {
+        if ("stdout".equals(out)) {
             System.out.print(in);
         } else {
-            output.print(in);
+            try (PrintWriter output = new PrintWriter(new BufferedOutputStream(new FileOutputStream(out)))) {
+                output.print(in);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -64,7 +69,7 @@ public class CSVReader {
         if (!Files.isRegularFile(Paths.get(path))) {
             throw new IllegalArgumentException("input must be file");
         }
-        if (!out.equals("stdout") && !Files.isRegularFile(Paths.get(out))) {
+        if (!"stdout".equals(out) && !Files.isRegularFile(Paths.get(out))) {
             throw new IllegalArgumentException("Output folder (out) must be either directory or stdout");
         }
     }
