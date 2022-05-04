@@ -1,0 +1,8 @@
+<?xml version="1.1" encoding="utf-8" ?>
+<command wasChampion="true" budget="10" name="Lokomotiv">
+    <coach surname="Semin"/>
+    <players>
+        <player>Bilyaletdinov</player>
+        <player>Sychev</player>
+    </players>
+</command>

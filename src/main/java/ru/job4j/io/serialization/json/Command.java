@@ -7,14 +7,14 @@ public class Command {
     private final int budget;
     private final String name;
     private final Coach coach;
-    private final String[] team;
+    private final String[] players;
 
-    public Command(boolean wasChampion, int budget, String name, Coach coach, String[] team) {
+    public Command(boolean wasChampion, int budget, String name, Coach coach, String[] players) {
         this.wasChampion = wasChampion;
         this.budget = budget;
         this.name = name;
         this.coach = coach;
-        this.team = team;
+        this.players = players;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class Command {
                 + ", budget=" + budget
                 + ", name='" + name + '\''
                 + ", coach=" + coach
-                + ", team=" + Arrays.toString(team)
+                + ", players=" + Arrays.toString(players)
                 + '}';
     }
 }

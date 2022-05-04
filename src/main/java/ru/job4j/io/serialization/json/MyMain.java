@@ -16,7 +16,7 @@ public class MyMain {
                         + "\"budget\":10,"
                         + "\"name\":\"Lokomotiv\","
                         + "\"coach\":{\"surname\":\"Semin\"},"
-                        + "\"team\":"
+                        + "\"players\":"
                         + "[\"Bilyaletdinov\",\"Sychev\"]"
                         + "}";
         final Command commandMod = gson.fromJson(commandJson, Command.class);
