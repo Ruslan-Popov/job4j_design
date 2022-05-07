@@ -1,7 +1,18 @@
 package ru.job4j.io.serialization.json;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "coach")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Coach {
-    private final String surname;
+
+    @XmlAttribute
+    private String surname;
+
+    public Coach() { }
 
     public Coach(String surname) {
         this.surname = surname;
