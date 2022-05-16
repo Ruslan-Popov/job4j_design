@@ -12,6 +12,10 @@ public class Coach {
     @XmlAttribute
     private String surname;
 
+    public String getSurname() {
+        return surname;
+    }
+
     public Coach() { }
 
     public Coach(String surname) {

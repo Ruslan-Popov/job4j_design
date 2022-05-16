@@ -1,6 +1,11 @@
 package ru.job4j.io.serialization.json;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Person {
     private final boolean sex;
@@ -8,7 +13,7 @@ public class Person {
     private final Contact contact;
     private final String[] statuses;
 
-    public Person(boolean sex, int age, Contact contact, String[] statuses) {
+    public Person(boolean sex, int age, Contact contact, String... statuses) {
         this.sex = sex;
         this.age = age;
         this.contact = contact;
@@ -25,5 +30,37 @@ public class Person {
                 + '}';
     }
 
+    public boolean isSex() {
+        return sex;
+    }
 
+    public int getAge() {
+        return age;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public String[] getStatuses() {
+        return statuses;
+    }
+
+    public static void main(String[] args) {
+        JSONObject jsonContact = new JSONObject("{\"phone\":\"+7(924)111-111-11-11\"}");
+        List<String> list = new ArrayList<>();
+        list.add("Student");
+        list.add("Free");
+        JSONArray jsonStatuses = new JSONArray(list);
+        final Person person = new Person(false, 30, new Contact("11-111"), "Worker", "Married");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sex", person.isSex());
+        jsonObject.put("age", person.getAge());
+        jsonObject.put("contact", jsonContact);
+        jsonObject.put("statuses", jsonStatuses);
+
+        System.out.println(jsonObject.toString());
+
+        System.out.println(new JSONObject(person).toString());
+    }
 }

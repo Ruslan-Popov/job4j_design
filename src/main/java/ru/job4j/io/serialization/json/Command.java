@@ -17,6 +17,26 @@ public class Command {
     @XmlElement(name = "player")
     private String[] players;
 
+    public boolean isWasChampion() {
+        return wasChampion;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Coach getCoach() {
+        return coach;
+    }
+
+    public String[] getPlayers() {
+        return players;
+    }
+
     public Command() { }
 
     public Command(boolean wasChampion, int budget, String name, Coach coach, String[] players) {
